@@ -5,7 +5,7 @@
 #import <SceneKit/SceneKit.h>
 #import <unordered_map>
 #import <string>
-#define MAX_NODE_COUNT (3)
+
 #define RESET_BUTTON_NAME @"RESET_BUTTON_NAME"
 
 #define GUESS_Z_POS (100)

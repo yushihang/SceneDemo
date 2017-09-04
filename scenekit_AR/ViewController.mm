@@ -12,7 +12,7 @@
 #import <CoreMotion/CoreMotion.h>
 #import "Scene.h"
 #import "UIAlertView+Blocks.h"
-
+#define MAX_NODE_COUNT (20)
 @interface ViewController () <ARSCNViewDelegate>
 
 @property (nonatomic, strong) IBOutlet ARSCNView *sceneView;
@@ -198,9 +198,9 @@ float randomFloat(float min, float max) {
 {
     if (currentTime < self.creationTime)
         return;
-    if ([(Scene*)self.sceneView.overlaySKScene getCount] > 20)
+    if ([(Scene*)self.sceneView.overlaySKScene getCount] > MAX_NODE_COUNT)
         return;
-    self.creationTime = currentTime + randomFloat(2.0, 4.0)
+    self.creationTime = currentTime + randomFloat(2.0, 4.0);
     ARFrame* frame = self.sceneView.session.currentFrame;
     ARLightEstimate* lightEstimate = frame.lightEstimate;
     if (lightEstimate != nil){
@@ -223,22 +223,35 @@ float randomFloat(float min, float max) {
     // Define 360º in radians
     float _360degrees = 2.0 * M_PI;
     // Create a rotation matrix in the X-axis
-    simd_float4x4 rotateX = SCNMatrix4TosimdMat4(SCNMatrix4MakeRotation(_360degrees * randomFloat(0.2, 0.6), 1, 0, 0));
+    
+    float xDegree = randomFloat(0.0, 1.0);
+    //xDegree = 0.5;
+    simd_float4x4 rotateX =  SCNMatrix4TosimdMat4(SCNMatrix4MakeRotation(_360degrees * xDegree, 1, 0, 0));
+
     
     // Create a rotation matrix in the Y-axis
-    simd_float4x4 rotateY = SCNMatrix4TosimdMat4(SCNMatrix4MakeRotation(_360degrees * randomFloat(0.0, 1.0), 0, 1, 0));
+    float yDegree = randomFloat(0.2, 0.7);
+    simd_float4x4 rotateY = SCNMatrix4TosimdMat4(SCNMatrix4MakeRotation(_360degrees * yDegree, 0, 1, 0));
     
     // Combine both rotation matrices
     simd_float4x4 rotation = simd_mul(rotateX, rotateY);
-    
-    
+    //rotation = rotateX;
     // Create a translation matrix in the Z-axis with a value between 1 and 2 meters
     simd_float4x4 translation = matrix_identity_float4x4;
-    translation.columns[3].z = -2.5 - randomFloat(0.0, 1.0);
+    translation.columns[3].z = -1.5 - randomFloat(0.0, 1.0);
     //translation.columns[3].z = -1.5;
     // Combine the rotation and translation matrices
     simd_float4x4 transform = simd_mul(rotation, translation);
-    transform = translation;
+    
+    simd_float4x4 rotateXReverse =  SCNMatrix4TosimdMat4(SCNMatrix4MakeRotation(_360degrees * -xDegree, 1, 0, 0));
+    simd_float4x4 rotateYReverse =  SCNMatrix4TosimdMat4(SCNMatrix4MakeRotation(_360degrees * -yDegree, 0, 1, 0));
+    
+    transform = simd_mul(transform, rotateYReverse);
+    transform = simd_mul(transform, rotateXReverse);
+    
+    simd_float4x4 rotateY2 = SCNMatrix4TosimdMat4(SCNMatrix4MakeRotation(_360degrees * randomFloat(0.0, 1.0), 0, 1, 0));
+    transform = simd_mul(transform, rotateY2);
+    //transform = translation;
     // Create an anchor
     ARAnchor* anchor = [[ARAnchor alloc]initWithTransform:transform];
     
