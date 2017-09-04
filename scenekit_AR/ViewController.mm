@@ -13,6 +13,7 @@
 #import "Scene.h"
 #import "UIAlertView+Blocks.h"
 #define MAX_NODE_COUNT (20)
+#define NODE_NAME @"NODE_NAME__"
 @interface ViewController () <ARSCNViewDelegate>
 
 @property (nonatomic, strong) IBOutlet ARSCNView *sceneView;
@@ -50,7 +51,6 @@
     
     // Show statistics such as fps and timing information
     self.sceneView.showsStatistics = YES;
-    
     // Create a new scene
     SCNScene* scene = [SCNScene sceneNamed:@"art.scnassets/ship.scn"];
     
@@ -61,6 +61,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetTrackWithClear) name:RESET_ARKIT_TRACK_FROM_SCENE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pauseTrack) name:PAUSE_ARKIT_TRACK_FROM_SCENE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resumeTrack) name:RESUME_ARKIT_TRACK_FROM_SCENE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTouch:) name:TOUCH_EVENT object:nil];
     
     self.motionManager = [CMMotionManager new];
     self.motionManager.accelerometerUpdateInterval = 0.1;
@@ -84,7 +86,7 @@
     self.ambientLightNode.light.color = [UIColor darkGrayColor];
     [self.sceneView.scene.rootNode addChildNode:self.ambientLightNode];
     
-    
+    /*
     if ([self.motionManager isAccelerometerAvailable])
     {
         [self.motionManager  startAccelerometerUpdatesToQueue:self.motionQueue withHandler:^(CMAccelerometerData *accelerometerData, NSError *error){
@@ -93,7 +95,7 @@
              accelerometerData.acceleration.x,
              accelerometerData.acceleration.y,
              accelerometerData.acceleration.z);
-             */
+     
             if (fabs(accelerometerData.acceleration.z) < 0.3)
             {
                 //[self resetTrackWithOption:0];
@@ -106,6 +108,7 @@
             }
         }];
     }
+     */
     self.ship = [scene.rootNode childNodeWithName:@"ship" recursively:YES];
     self.ship.hidden = YES;
 }
@@ -291,6 +294,7 @@ float randomFloat(float min, float max) {
     // Create and configure a node for the anchor added to the view's session.
     SCNNode* node = [self.ship clone];
     node.hidden = NO;
+    node.name = NODE_NAME;
     return node;
 }
 /**
@@ -340,6 +344,28 @@ float randomFloat(float min, float max) {
 {
     
 }
-
+-(void)onTouch:(NSNotification*)notification
+{
+    UITouch* touch = notification.object;
+    if (![touch isKindOfClass:[UITouch class]])
+        return;
+}
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    UITouch* touch = [touches anyObject];
+    if (touch == nil)
+        return;
+    
+    CGPoint p = [touch locationInView:self.sceneView];
+    NSArray *hitResults = [self.sceneView hitTest:p options:nil];
+    if([hitResults count] == 0)
+        return;
+    // retrieved the first clicked object
+    SCNHitTestResult *result = [hitResults objectAtIndex:0];
+    if ([result.node.name isEqualToString:NODE_NAME])
+    {
+        int a = 1;
+    }
+}
 @end
 

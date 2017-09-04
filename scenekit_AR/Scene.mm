@@ -147,7 +147,15 @@
     NSArray* hitNodes = [self nodesAtPoint:location];
     if (hitNodes.count == 0)
         return;
-
+    
+    SKNode* node = [hitNodes objectAtIndex:0];
+    if ([node.name isEqualToString:RESET_BUTTON_NAME])
+    {
+        [self resetTrack];
+        return;
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:TOUCH_EVENT object:touch];
 }
 
 
