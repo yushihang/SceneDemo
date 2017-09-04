@@ -55,7 +55,7 @@
     // Show statistics such as fps and timing information
     //self.sceneView.showsStatistics = YES;
     // Create a new scene
-    SCNScene* scene = [SCNScene sceneNamed:@"art.scnassets/balloon.dae"];
+    SCNScene* scene = [SCNScene sceneNamed:@"art.scnassets/balloon.scn"];
     
     // Set the scene to the view
     self.sceneView.scene = scene;
@@ -79,8 +79,9 @@
     self.lightNode = [SCNNode node];
     self.lightNode.light = [SCNLight light];
     self.lightNode.light.type = SCNLightTypeOmni;
-    self.lightNode.position = SCNVector3Make(0, 10, 10);
+    self.lightNode.position = SCNVector3Make(50, 50, 10);
     [self.sceneView.scene.rootNode addChildNode:self.lightNode];
+    self.lightNode.light.intensity = 2000;
     
     // create and add an ambient light to the scene
     self.ambientLightNode = [SCNNode node];
@@ -112,7 +113,7 @@
         }];
     }
      */
-    self.ship = [scene.rootNode childNodeWithName:@"balloon" recursively:YES];
+    self.ship = [scene.rootNode childNodeWithName:@"balloon_002" recursively:YES];
     self.ship.hidden = YES;
     
     self.nodeAnchorDictionary = [NSMutableDictionary dictionary];
@@ -223,8 +224,10 @@ float randomFloat(float min, float max) {
     if (lightEstimate != nil){
         [self.sceneView.scene enableEnvironmentMapWithIntensity:lightEstimate.ambientIntensity / 40 queue:self.serialQueue_];
         
-        self.lightNode.light.temperature = self.ambientLightNode.light.temperature = lightEstimate.ambientColorTemperature;
-        self.lightNode.light.intensity = self.ambientLightNode.light.intensity = lightEstimate.ambientIntensity;
+        //self.lightNode.light.temperature =
+        self.ambientLightNode.light.temperature = lightEstimate.ambientColorTemperature;
+        //self.lightNode.light.intensity =
+        self.ambientLightNode.light.intensity = lightEstimate.ambientIntensity;
         
     }
     else {
@@ -248,7 +251,7 @@ float randomFloat(float min, float max) {
 
     
     // Create a rotation matrix in the Y-axis
-    float yDegree = randomFloat(0.2, 0.7);
+    float yDegree = randomFloat(0.3, 0.8);
     simd_float4x4 rotateY = SCNMatrix4TosimdMat4(SCNMatrix4MakeRotation(_360degrees * yDegree, 0, 1, 0));
     
     // Combine both rotation matrices
