@@ -9,12 +9,21 @@
 /* Begin PBXBuildFile section */
 		1819EE9F1F5D2E8C001AE0D4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1819EE9E1F5D2E8C001AE0D4 /* AppDelegate.m */; };
 		1819EEA11F5D2E8C001AE0D4 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 1819EEA01F5D2E8C001AE0D4 /* art.scnassets */; };
-		1819EEA41F5D2E8C001AE0D4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1819EEA31F5D2E8C001AE0D4 /* ViewController.m */; };
+		1819EEA41F5D2E8C001AE0D4 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1819EEA31F5D2E8C001AE0D4 /* ViewController.mm */; };
 		1819EEA71F5D2E8C001AE0D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1819EEA51F5D2E8C001AE0D4 /* Main.storyboard */; };
 		1819EEA91F5D2E8C001AE0D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1819EEA81F5D2E8C001AE0D4 /* Assets.xcassets */; };
 		1819EEAC1F5D2E8C001AE0D4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1819EEAA1F5D2E8C001AE0D4 /* LaunchScreen.storyboard */; };
 		1819EEAF1F5D2E8C001AE0D4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1819EEAE1F5D2E8C001AE0D4 /* main.m */; };
 		1819EEDB1F5D3A90001AE0D4 /* SCNSceneExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 1819EEDA1F5D3A90001AE0D4 /* SCNSceneExtension.m */; };
+		18FCB2311F5D5DF100105B8D /* Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18FCB2301F5D5DF100105B8D /* Scene.mm */; };
+		18FCB2351F5D5E5E00105B8D /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18FCB2341F5D5E5E00105B8D /* SceneKit.framework */; };
+		18FCB2371F5D5E6700105B8D /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18FCB2361F5D5E6700105B8D /* ARKit.framework */; };
+		18FCB2391F5D612C00105B8D /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18FCB2381F5D612C00105B8D /* CoreMotion.framework */; };
+		18FCB23C1F5D757E00105B8D /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FCB23B1F5D757E00105B8D /* UIAlertView+Blocks.m */; };
+		18FCB23E1F5D7BAD00105B8D /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18FCB23D1F5D7BAD00105B8D /* SpriteKit.framework */; };
+		18FCB2401F5D7C3C00105B8D /* reset.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FCB23F1F5D7C3C00105B8D /* reset.png */; };
+		18FCB2431F5D805000105B8D /* distance_notify.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FCB2411F5D804F00105B8D /* distance_notify.png */; };
+		18FCB2441F5D805000105B8D /* direction_notify.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FCB2421F5D805000105B8D /* direction_notify.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +32,7 @@
 		1819EE9E1F5D2E8C001AE0D4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1819EEA01F5D2E8C001AE0D4 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		1819EEA21F5D2E8C001AE0D4 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		1819EEA31F5D2E8C001AE0D4 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		1819EEA31F5D2E8C001AE0D4 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		1819EEA61F5D2E8C001AE0D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1819EEA81F5D2E8C001AE0D4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1819EEAB1F5D2E8C001AE0D4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -31,6 +40,17 @@
 		1819EEAE1F5D2E8C001AE0D4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1819EED91F5D3A5D001AE0D4 /* SCNSceneExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCNSceneExtension.h; sourceTree = "<group>"; };
 		1819EEDA1F5D3A90001AE0D4 /* SCNSceneExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCNSceneExtension.m; sourceTree = "<group>"; };
+		18FCB2301F5D5DF100105B8D /* Scene.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Scene.mm; sourceTree = "<group>"; };
+		18FCB2321F5D5E0800105B8D /* Scene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
+		18FCB2341F5D5E5E00105B8D /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
+		18FCB2361F5D5E6700105B8D /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
+		18FCB2381F5D612C00105B8D /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		18FCB23A1F5D757D00105B8D /* UIAlertView+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Blocks.h"; sourceTree = "<group>"; };
+		18FCB23B1F5D757E00105B8D /* UIAlertView+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Blocks.m"; sourceTree = "<group>"; };
+		18FCB23D1F5D7BAD00105B8D /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
+		18FCB23F1F5D7C3C00105B8D /* reset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reset.png; sourceTree = "<group>"; };
+		18FCB2411F5D804F00105B8D /* distance_notify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = distance_notify.png; sourceTree = "<group>"; };
+		18FCB2421F5D805000105B8D /* direction_notify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = direction_notify.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +58,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18FCB23E1F5D7BAD00105B8D /* SpriteKit.framework in Frameworks */,
+				18FCB2391F5D612C00105B8D /* CoreMotion.framework in Frameworks */,
+				18FCB2371F5D5E6700105B8D /* ARKit.framework in Frameworks */,
+				18FCB2351F5D5E5E00105B8D /* SceneKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -49,6 +73,7 @@
 			children = (
 				1819EE9C1F5D2E8C001AE0D4 /* scenekit_AR */,
 				1819EE9B1F5D2E8C001AE0D4 /* Products */,
+				18FCB2331F5D5E5D00105B8D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,6 +88,11 @@
 		1819EE9C1F5D2E8C001AE0D4 /* scenekit_AR */ = {
 			isa = PBXGroup;
 			children = (
+				18FCB2421F5D805000105B8D /* direction_notify.png */,
+				18FCB2411F5D804F00105B8D /* distance_notify.png */,
+				18FCB23F1F5D7C3C00105B8D /* reset.png */,
+				18FCB23A1F5D757D00105B8D /* UIAlertView+Blocks.h */,
+				18FCB23B1F5D757E00105B8D /* UIAlertView+Blocks.m */,
 				1819EE9D1F5D2E8C001AE0D4 /* AppDelegate.h */,
 				1819EE9E1F5D2E8C001AE0D4 /* AppDelegate.m */,
 				1819EEA01F5D2E8C001AE0D4 /* art.scnassets */,
@@ -74,9 +104,22 @@
 				1819EED91F5D3A5D001AE0D4 /* SCNSceneExtension.h */,
 				1819EEDA1F5D3A90001AE0D4 /* SCNSceneExtension.m */,
 				1819EEA21F5D2E8C001AE0D4 /* ViewController.h */,
-				1819EEA31F5D2E8C001AE0D4 /* ViewController.m */,
+				1819EEA31F5D2E8C001AE0D4 /* ViewController.mm */,
+				18FCB2301F5D5DF100105B8D /* Scene.mm */,
+				18FCB2321F5D5E0800105B8D /* Scene.h */,
 			);
 			path = scenekit_AR;
+			sourceTree = "<group>";
+		};
+		18FCB2331F5D5E5D00105B8D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				18FCB23D1F5D7BAD00105B8D /* SpriteKit.framework */,
+				18FCB2381F5D612C00105B8D /* CoreMotion.framework */,
+				18FCB2361F5D5E6700105B8D /* ARKit.framework */,
+				18FCB2341F5D5E5E00105B8D /* SceneKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,7 +181,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1819EEA11F5D2E8C001AE0D4 /* art.scnassets in Resources */,
+				18FCB2431F5D805000105B8D /* distance_notify.png in Resources */,
+				18FCB2401F5D7C3C00105B8D /* reset.png in Resources */,
 				1819EEAC1F5D2E8C001AE0D4 /* LaunchScreen.storyboard in Resources */,
+				18FCB2441F5D805000105B8D /* direction_notify.png in Resources */,
 				1819EEA91F5D2E8C001AE0D4 /* Assets.xcassets in Resources */,
 				1819EEA71F5D2E8C001AE0D4 /* Main.storyboard in Resources */,
 			);
@@ -151,10 +197,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1819EEA41F5D2E8C001AE0D4 /* ViewController.m in Sources */,
+				1819EEA41F5D2E8C001AE0D4 /* ViewController.mm in Sources */,
 				1819EEAF1F5D2E8C001AE0D4 /* main.m in Sources */,
 				1819EEDB1F5D3A90001AE0D4 /* SCNSceneExtension.m in Sources */,
+				18FCB23C1F5D757E00105B8D /* UIAlertView+Blocks.m in Sources */,
 				1819EE9F1F5D2E8C001AE0D4 /* AppDelegate.m in Sources */,
+				18FCB2311F5D5DF100105B8D /* Scene.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
