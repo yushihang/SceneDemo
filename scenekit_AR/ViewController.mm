@@ -11,6 +11,7 @@
 #import <SceneKit/SceneKit.h>
 #import <CoreMotion/CoreMotion.h>
 #import "Scene.h"
+#import <float.h>
 #import "UIAlertView+Blocks.h"
 #define MAX_NODE_COUNT (20)
 #define NODE_NAME @"NODE_NAME__"
@@ -24,6 +25,8 @@
 @property (nonatomic, strong) NSOperationQueue *motionQueue;
 @property (nonatomic, strong) SCNNode *ship;
 @property (nonatomic) NSInteger creationTime;
+@property (nonatomic, strong) NSMutableDictionary* nodeAnchorDictionary;
+@property (nonatomic, assign) id<SCNSceneRenderer> renderer;
 @end
 
 
@@ -50,9 +53,9 @@
     self.sceneView.delegate = self;
     
     // Show statistics such as fps and timing information
-    self.sceneView.showsStatistics = YES;
+    //self.sceneView.showsStatistics = YES;
     // Create a new scene
-    SCNScene* scene = [SCNScene sceneNamed:@"art.scnassets/ship.scn"];
+    SCNScene* scene = [SCNScene sceneNamed:@"art.scnassets/balloon.dae"];
     
     // Set the scene to the view
     self.sceneView.scene = scene;
@@ -109,8 +112,10 @@
         }];
     }
      */
-    self.ship = [scene.rootNode childNodeWithName:@"ship" recursively:YES];
+    self.ship = [scene.rootNode childNodeWithName:@"balloon" recursively:YES];
     self.ship.hidden = YES;
+    
+    self.nodeAnchorDictionary = [NSMutableDictionary dictionary];
 }
 
 - (void) resetTrackWithClear
@@ -199,18 +204,28 @@ float randomFloat(float min, float max) {
 
 - (void)renderer:(id <SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)currentTime API_AVAILABLE(macos(10.10));
 {
+    self.renderer = renderer;
     if (currentTime < self.creationTime)
         return;
-    if ([(Scene*)self.sceneView.overlaySKScene getCount] > MAX_NODE_COUNT)
+    int count = [(Scene*)self.sceneView.overlaySKScene getCount];
+    if ( count > MAX_NODE_COUNT)
         return;
-    self.creationTime = currentTime + randomFloat(2.0, 4.0);
+    if (count < MAX_NODE_COUNT / 5)
+        self.creationTime = currentTime + 0.8;
+    else if (count < MAX_NODE_COUNT * 0.5)
+        self.creationTime = currentTime + 1.6;
+    else if (count < MAX_NODE_COUNT * 0.75)
+        self.creationTime = currentTime + 2.4;
+    else
+        self.creationTime = currentTime + randomFloat(3.0, 5.0);
     ARFrame* frame = self.sceneView.session.currentFrame;
     ARLightEstimate* lightEstimate = frame.lightEstimate;
     if (lightEstimate != nil){
         [self.sceneView.scene enableEnvironmentMapWithIntensity:lightEstimate.ambientIntensity / 40 queue:self.serialQueue_];
         
-        self.ambientLightNode.light.temperature = lightEstimate.ambientColorTemperature;
-        self.ambientLightNode.light.intensity = lightEstimate.ambientIntensity;
+        self.lightNode.light.temperature = self.ambientLightNode.light.temperature = lightEstimate.ambientColorTemperature;
+        self.lightNode.light.intensity = self.ambientLightNode.light.intensity = lightEstimate.ambientIntensity;
+        
     }
     else {
         [self.sceneView.scene enableEnvironmentMapWithIntensity:40 queue:self.serialQueue_];
@@ -241,7 +256,7 @@ float randomFloat(float min, float max) {
     //rotation = rotateX;
     // Create a translation matrix in the Z-axis with a value between 1 and 2 meters
     simd_float4x4 translation = matrix_identity_float4x4;
-    translation.columns[3].z = -1.5 - randomFloat(0.0, 1.0);
+    translation.columns[3].z = -1.5 - randomFloat(0.0, 1.5);
     //translation.columns[3].z = -1.5;
     // Combine the rotation and translation matrices
     simd_float4x4 transform = simd_mul(rotation, translation);
@@ -261,7 +276,7 @@ float randomFloat(float min, float max) {
     // Add the anchor
     [self.sceneView.session addAnchor:anchor];
     
-    [(Scene*)self.sceneView.overlaySKScene addCount];
+    
     
     
 }
@@ -306,7 +321,9 @@ float randomFloat(float min, float max) {
  */
 - (void)renderer:(id <SCNSceneRenderer>)renderer didAddNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor
 {
-    
+    [(Scene*)self.sceneView.overlaySKScene addCount];
+    intptr_t p = (intptr_t)node;
+    self.nodeAnchorDictionary[@(p)] = anchor;
 }
 
 /**
@@ -342,30 +359,102 @@ float randomFloat(float min, float max) {
  */
 - (void)renderer:(id <SCNSceneRenderer>)renderer didRemoveNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor
 {
-    
+    [(Scene*)self.sceneView.overlaySKScene delCount];
+    [self.nodeAnchorDictionary removeObjectForKey:node];
 }
 -(void)onTouch:(NSNotification*)notification
 {
     UITouch* touch = notification.object;
     if (![touch isKindOfClass:[UITouch class]])
         return;
-}
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    UITouch* touch = [touches anyObject];
-    if (touch == nil)
-        return;
-    
     CGPoint p = [touch locationInView:self.sceneView];
     NSArray *hitResults = [self.sceneView hitTest:p options:nil];
     if([hitResults count] == 0)
         return;
     // retrieved the first clicked object
     SCNHitTestResult *result = [hitResults objectAtIndex:0];
-    if ([result.node.name isEqualToString:NODE_NAME])
+    SCNNode* node = result.node;
+    do
     {
-        int a = 1;
+        if ([node.name isEqualToString:NODE_NAME])
+        {
+            [self touchSuccess:node];
+        }
+        node = node.parentNode;
+    } while (node != nil);
+
+
+}
+
+-(void)touchSuccess:(SCNNode*)node
+{
+    CGSize size = [self getNodeSizeOnScreen:node];
+    //NSLog(@"size = %.02f, %.02f", (float)size.width, (float)size.height);
+    if (MAX(size.width,size.height) < 400)
+    {
+        [(Scene*)self.sceneView.overlaySKScene showNotifyForDistance];
+        return;
     }
+    NSNumber* key = @((intptr_t)node);
+    ARAnchor* anchor = self.nodeAnchorDictionary[@((intptr_t)node)];
+    float duration = 0.5f;
+    SCNAction* action = [SCNAction fadeOpacityTo:0.0 duration:duration];
+    action.timingMode = SCNActionTimingModeEaseIn;
+    __weak SCNNode* weakNode = node;
+    [self.nodeAnchorDictionary removeObjectForKey:key];
+    [(Scene*)self.sceneView.overlaySKScene addScore];
+    [node runAction:action completionHandler:^{
+        [weakNode removeFromParentNode];
+        [self.sceneView.session removeAnchor:anchor];
+        
+    }];
+}
+
+-(CGSize) getNodeSizeOnScreen:(SCNNode*)node
+{
+    SCNVector3 localMin, localMax;
+    
+    BOOL b = [node getBoundingBoxMin:&localMin max:&localMax];
+    if (!b)
+        return CGSizeMake(-1, -1);
+    SCNVector3 min = [node convertPosition:localMin toNode:nil];
+    SCNVector3 max = [node convertPosition:localMax toNode:nil];
+    SCNVector3 arr[8] =
+    {
+      [self.renderer projectPoint:SCNVector3Make(min.x, min.y, min.z)],
+      [self.renderer projectPoint:SCNVector3Make(max.x, min.y, min.z)],
+      [self.renderer projectPoint:SCNVector3Make(min.x, max.y, min.z)],
+      [self.renderer projectPoint:SCNVector3Make(max.x, max.y, min.z)],
+      [self.renderer projectPoint:SCNVector3Make(min.x, min.y, max.z)],
+      [self.renderer projectPoint:SCNVector3Make(max.x, min.y, max.z)],
+      [self.renderer projectPoint:SCNVector3Make(min.x, max.y, max.z)],
+      [self.renderer projectPoint:SCNVector3Make(max.x, max.y, max.z)],
+    };
+    
+    CGFloat minX = FLT_MAX;
+    CGFloat minY = FLT_MAX;
+    CGFloat minZ = FLT_MAX;
+    CGFloat maxX = FLT_MIN;
+    CGFloat maxY = FLT_MIN;
+    CGFloat maxZ = FLT_MIN;
+
+    for (auto& vector : arr)
+    {
+        minX = minX > vector.x ? vector.x: minX;
+        minY = minY > vector.y ? vector.y: minY;
+        minZ = minZ > vector.z ? vector.z: minZ;
+        maxX = maxX < vector.x ? vector.x: maxX;
+        maxY = maxY < vector.y ? vector.y: maxY;
+        maxZ = maxZ < vector.z ? vector.z: maxZ;
+    }
+
+    
+    //let width = maxX - minX
+    //let height = maxY - minY
+    //let depth = maxZ - minZ
+    
+    CGSize size =  CGSizeMake(maxX - minX, maxY - minY);
+    return size;
 }
 @end
 

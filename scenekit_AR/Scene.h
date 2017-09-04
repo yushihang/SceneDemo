@@ -7,7 +7,10 @@
 @interface Scene : SKScene
 - (void) resetCount;
 - (void)setDirectionNotifyNodeVisible:(BOOL)visible;
+- (void)showNotifyForDistance;
 - (void)addCount;
+- (void)delCount;
 - (int)getCount;
+- (void)addScore;
 @end
 

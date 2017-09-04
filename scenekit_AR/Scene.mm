@@ -84,7 +84,7 @@
         directionNotifyNode_ = [[SKSpriteNode alloc]initWithImageNamed:@"direction_notify.png"];
         directionNotifyNode_.xScale = directionNotifyNode_.yScale = [UIScreen mainScreen].bounds.size.height * 0.05 / directionNotifyNode_.size.height ;
         directionNotifyNode_.position = CGPointMake([UIScreen mainScreen].bounds.size.width*0.5, [UIScreen mainScreen].bounds.size.height - directionNotifyNode_.frame.size.height*0.75);
-        directionNotifyNode_.hidden = NO;
+        directionNotifyNode_.hidden = YES;
         
         
     }
@@ -119,6 +119,11 @@
     [self updateLabels];
 }
 
+- (void)addScore{
+    [self setSuccessNodeNumer:successedAnchorCount_+1];
+}
+
+
 -(void)updateLabels
 {
     numberLabel_.text = [NSString stringWithFormat:@"%d", nodeNumber_];
@@ -146,7 +151,10 @@
     
     NSArray* hitNodes = [self nodesAtPoint:location];
     if (hitNodes.count == 0)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:TOUCH_EVENT object:touch];
         return;
+    }
     
     SKNode* node = [hitNodes objectAtIndex:0];
     if ([node.name isEqualToString:RESET_BUTTON_NAME])
@@ -201,6 +209,11 @@
 - (void)addCount
 {
     [self setNodeNumer:nodeNumber_ + 1];
+}
+- (void)delCount
+{
+    if (nodeNumber_ > 0)
+    [self setNodeNumer:nodeNumber_ - 1];
 }
 - (int)getCount
 {
